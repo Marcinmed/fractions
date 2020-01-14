@@ -12,15 +12,20 @@ You should put complete class here. It must be named `Fraction` and must have th
 """
 from math import gcd
 
-
 class Fraction:
     """
     Fraction class.
     """
 
     def __init__(self, nom, denom):
-        self.nom = nom
-        self.denom = denom
+        d = gcd(nom, denom)
+        self.nom = nom//d
+        self.denom = denom//d
+        if denom == 0:
+            raise ValueError
+        if denom < 0:
+            self.nom = - self.nom
+            self.denom = - self.denom
 
     def __str__(self):
         return f"{self.nom}/{self.denom}"
@@ -30,3 +35,19 @@ class Fraction:
 
     def __eq__(self, other):
         return self.nom == other.nom and self.denom == other.denom
+
+    def __add__(self, other):
+        return Fraction(self.nom * other.denom + other.nom * self.denom, self.denom * other.denom)
+
+
+    def __sub__(self, other):
+        return Fraction(self.nom * other.denom - other.nom * self.denom, self.denom * other.denom)
+
+    def __mul__(self, other):
+        return Fraction((self.nom * other.nom), (self.denom * other.denom))
+
+    def decimal (self):
+        return self.nom / self.denom
+
+    def __truediv__(self, other):
+        return Fraction (self.nom * other.denom, self.denom * other.nom)
